@@ -110,8 +110,6 @@ int AnimWebPMaker::addImage(const uint8_t *data, size_t data_size, int duration,
         return ok;
     }
 
-    WebPImageReader reader;
-
     //For Windows Image Content, Not Available.
     //#ifdef HAVE_WINCODEC_H
     //  // Try to decode the file using WIC falling back to the other readers for
@@ -122,7 +120,7 @@ int AnimWebPMaker::addImage(const uint8_t *data, size_t data_size, int duration,
 
     pic.use_argb = 1;
     //Read image.
-    reader = WebPGuessImageReader(data, data_size);
+    WebPImageReader reader = WebPGuessImageReader(data, data_size);
     ok = reader(data, data_size, &pic, 1, NULL);
     if (!ok) {
         LOGE("Read image fail.\n");
