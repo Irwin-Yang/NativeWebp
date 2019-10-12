@@ -35,7 +35,7 @@ static int ReadImage(const char filename[], WebPPicture *const pic) {
     return ok;
 }
 
-JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeInit
+extern "C" JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeInit
         (JNIEnv *env, jclass callClazz) {
     jclass clazz;
     clazz = env->FindClass("com/irwin/animwebp/AnimWebPMaker");
@@ -51,7 +51,7 @@ JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeInit
 }
 
 //nativeMakeOnce(String[] images, boolean mixed, int loopCount, int duration, float quality, String outputPath)
-JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeMakeOnce
+extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeMakeOnce
         (JNIEnv *env, jclass callClazz, jobjectArray picArray, jboolean mixed, jint loopCount,
          jint duration, jfloat quality, jstring joutputPath) {
 
@@ -185,7 +185,7 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeMakeOnce
     return ok;
 }
 
-JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSetup
+extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSetup
         (JNIEnv *env, jobject thiz) {
     AnimWebPMaker *maker = new AnimWebPMaker();
     int ok = maker->init();
@@ -195,7 +195,7 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSetup
 }
 
 
-JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
+extern "C" JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
         (JNIEnv *env, jobject thiz, jint jmin, jint jmax, jboolean jminSize, jboolean jmixed,
          jint jduration) {
     AnimWebPMaker *maker = getMaker(env, thiz);
@@ -210,7 +210,7 @@ JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
 }
 
 
-JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImage
+extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImage
         (JNIEnv *env, jobject thiz, jbyteArray jarray, jint jsize, jint duration, jfloat quality,
          jboolean lossless) {
     AnimWebPMaker *maker = getMaker(env, thiz);
@@ -231,7 +231,7 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImage
 }
 
 
-JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_make
+extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_make
         (JNIEnv *env, jobject thiz, jint loopCount, jstring output) {
     const char *path = env->GetStringUTFChars(output, NULL);
     if (path == NULL) {
@@ -247,7 +247,7 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_make
 }
 
 
-JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeRelease
+extern "C" JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeRelease
         (JNIEnv *env, jobject thiz) {
     AnimWebPMaker *maker = getMaker(env, thiz);
     if (maker == NULL) {
@@ -256,7 +256,7 @@ JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeRelease
     delete maker;
 }
 
-JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeFinalize
+extern "C" JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeFinalize
         (JNIEnv *env, jobject thiz) {
     Java_com_irwin_animwebp_AnimWebPMaker_nativeRelease(env, thiz);
 }

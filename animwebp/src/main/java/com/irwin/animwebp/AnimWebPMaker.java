@@ -2,6 +2,7 @@ package com.irwin.animwebp;
 
 
 import android.graphics.Bitmap;
+import android.support.annotation.IntRange;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -25,7 +26,7 @@ public class AnimWebPMaker {
     private boolean lossless;
     private boolean mConfigChanged;
 
-    public static boolean makeOnce(String[] images, boolean mixed, int loopCount, int duration, int quality, String outputPath) {
+    public static boolean makeOnce(String[] images, boolean mixed, int loopCount, int duration,@IntRange(from = 1, to = 100) int quality, String outputPath) {
         return (nativeMakeOnce(images, mixed, loopCount, duration, quality, outputPath) != 0);
     }
 
@@ -34,6 +35,7 @@ public class AnimWebPMaker {
         quality = 100;
         frameDuration = 100;
         mixed = true;
+        minSize = false;
         lossless = false;
     }
 
@@ -41,6 +43,11 @@ public class AnimWebPMaker {
         return min;
     }
 
+    /**
+     * minimum number of frame between key-frames (0=disable key-frames altogether)
+     *
+     * @param min
+     */
     public void setMin(int min) {
         this.min = min;
         configChange();
@@ -50,6 +57,11 @@ public class AnimWebPMaker {
         return max;
     }
 
+    /**
+     * maximum number of frame between key-frames(0=only keyframes)
+     *
+     * @param max
+     */
     public void setMax(int max) {
         this.max = max;
         configChange();
@@ -59,6 +71,11 @@ public class AnimWebPMaker {
         return minSize;
     }
 
+    /**
+     * Enable minimize size, Will be time cost.
+     *
+     * @param minSize
+     */
     public void setMinSize(boolean minSize) {
         this.minSize = minSize;
         configChange();
@@ -68,6 +85,11 @@ public class AnimWebPMaker {
         return mixed;
     }
 
+    /**
+     * use mixed lossy/lossless automatic mode
+     *
+     * @param mixed
+     */
     public void setMixed(boolean mixed) {
         this.mixed = mixed;
         configChange();
@@ -77,6 +99,11 @@ public class AnimWebPMaker {
         return loopCount;
     }
 
+    /**
+     * loop count (default: 0, = infinite loop)
+     *
+     * @param loopCount
+     */
     public void setLoopCount(int loopCount) {
         this.loopCount = loopCount;
     }
@@ -85,6 +112,11 @@ public class AnimWebPMaker {
         return frameDuration;
     }
 
+    /**
+     * Frame duration in millis.
+     *
+     * @param frameDuration
+     */
     public void setFrameDuration(int frameDuration) {
         this.frameDuration = frameDuration;
         configChange();
@@ -94,7 +126,12 @@ public class AnimWebPMaker {
         return quality;
     }
 
-    public void setQuality(int quality) {
+    /**
+     * Set frame quality in 1...100
+     *
+     * @param quality
+     */
+    public void setQuality(@IntRange(from = 1, to = 100) int quality) {
         this.quality = quality;
         configChange();
     }
@@ -148,7 +185,14 @@ public class AnimWebPMaker {
         return addImage(data, frameDuration, quality, lossless);
     }
 
-    public boolean addImage(byte[] data, int duration, float quality, boolean lossless) {
+    /**
+     * @param data
+     * @param duration Frame duration
+     * @param quality  Frame quality in 1..100
+     * @param lossless use lossless mode ,false default
+     * @return
+     */
+    public boolean addImage(byte[] data, int duration, @IntRange(from = 1, to = 100) int quality, boolean lossless) {
         checkApplyConfig();
         return nativeAddImage(data, data.length, duration, quality, lossless) != 0;
     }
