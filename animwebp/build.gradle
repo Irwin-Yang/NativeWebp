@@ -1,43 +1,63 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
+
+
     defaultConfig {
-        applicationId "com.irwin.webplib"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
-          //  moduleName "jary"         //生成的so名字
+            //  moduleName "jary"         //生成的so名字
             abiFilters "armeabi-v7a", "arm64-v8a"
 //            stl "stlport_static"    //打开.c 的 debug （此句是打开的debug的关键）
         }
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            debuggable true
-            jniDebuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-//    sourceSets {
-//        main {
-//            jniLibs.srcDirs 'src/main/libs'
-//        }
-//    }
+    externalNativeBuild {
+        ndkBuild {
+            path file('src/main/jni/Android.mk')
+        }
+    }
+
+
+//修改jar名字+将指定jar生成的地方
+    task makeJar(type: Copy) {
+        //删除存在的
+        delete 'build/libs/animwebp.jar'
+        //设置拷贝的文件
+        from('build/intermediates/intermediate-jars/release/')
+        //打进jar包后的文件目录
+        into('libs/')
+        //将classes.jar放入build/libs/目录下
+        //include ,exclude参数来设置过滤
+        //（我们只关心classes.jar这个文件）
+        include('classes.jar')
+        //重命名
+        rename('classes.jar', 'animwebp.jar')
+    }
+
+    makeJar.dependsOn(build)
+
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation project(path: ':animwebp')
 }
