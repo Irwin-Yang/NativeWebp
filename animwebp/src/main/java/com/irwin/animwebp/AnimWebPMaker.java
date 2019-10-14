@@ -227,7 +227,7 @@ public class AnimWebPMaker {
 
     private void checkInit() {
         if (nativeContext == 0) {
-            Log.i(TAG, "Setup native: " + nativeSetup());
+            nativeSetup();
         }
     }
 
