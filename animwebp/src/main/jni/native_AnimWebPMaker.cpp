@@ -196,6 +196,34 @@ extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSe
     return ok;
 }
 
+extern "C" JNIEXPORT void JNICALL
+Java_com_irwin_animwebp_AnimWebPMaker_setParam(JNIEnv *env, jobject thiz, jstring key_,
+                                               jstring value_) {
+    AnimWebPMaker *maker = getMaker(env, thiz);
+    if (maker == NULL) {
+        return;
+    }
+    const char *key = env->GetStringUTFChars(key_, 0);
+    const char *value = env->GetStringUTFChars(value_, 0);
+
+    if (!strcmp(key, "min")) {
+        maker->setMin(atoi(value));
+    } else if (!strcmp(key, "max")) {
+        maker->setMax(atoi(value));
+    } else if (!strcmp(key, "min_size")) {
+        maker->setMinSize(atoi(value));
+    } else if (!strcmp(key, "mixed")) {
+        maker->setMixed(atoi(value));
+    } else if (!strcmp(key, "duration")) {
+        maker->setDuration(atoi(value));
+    } else {
+        LOGE("Unsupported parameter %s %s", key, value);
+    }
+
+    env->ReleaseStringUTFChars(key_, key);
+    env->ReleaseStringUTFChars(value_, value);
+}
+
 
 extern "C" JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
         (JNIEnv *env, jobject thiz, jint jmin, jint jmax, jboolean jminSize, jboolean jmixed,

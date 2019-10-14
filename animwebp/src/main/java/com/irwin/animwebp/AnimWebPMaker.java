@@ -273,6 +273,8 @@ public class AnimWebPMaker {
 
     private native int nativeSetup();
 
+    private native void setParam(String key,String value);
+
     private native void config(int min, int max, boolean minSize, boolean mixed, int frameDuration);
 
     private native int nativeAddImage(byte[] data, int size, int duration, float quality, boolean lossless);

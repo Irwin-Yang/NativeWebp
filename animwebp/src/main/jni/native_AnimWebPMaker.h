@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeInit
-  (JNIEnv *, jclass);
+        (JNIEnv *, jclass);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeInit
  * Signature: ([Ljava/lang/String;ZIIFLjava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeMakeOnce
-  (JNIEnv *, jclass, jobjectArray, jboolean, jint, jint, jfloat, jstring);
+        (JNIEnv *, jclass, jobjectArray, jboolean, jint, jint, jfloat, jstring);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -29,7 +29,12 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeMakeOnce
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSetup
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
+
+
+JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_setParam(JNIEnv *, jobject, jstring,
+                                                                      jstring);
+
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -37,7 +42,7 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSetup
  * Signature: (IIZZI)V
  */
 JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
-  (JNIEnv *, jobject, jint, jint, jboolean, jboolean, jint);
+        (JNIEnv *, jobject, jint, jint, jboolean, jboolean, jint);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -45,7 +50,7 @@ JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
  * Signature: ([BIIFZ)I
  */
 JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImage
-  (JNIEnv *, jobject, jbyteArray, jint, jint, jfloat, jboolean);
+        (JNIEnv *, jobject, jbyteArray, jint, jint, jfloat, jboolean);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -61,7 +66,7 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImagePath
  * Signature: (ILjava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_make
-  (JNIEnv *, jobject, jint, jstring);
+        (JNIEnv *, jobject, jint, jstring);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -69,7 +74,7 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_make
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeRelease
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -77,7 +82,7 @@ JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeRelease
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeFinalize
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

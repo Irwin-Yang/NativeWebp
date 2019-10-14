@@ -10,12 +10,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        ndk {
-          //  moduleName "jary"         //生成的so名字
-            abiFilters "armeabi-v7a", "arm64-v8a"
-//            stl "stlport_static"    //打开.c 的 debug （此句是打开的debug的关键）
-        }
-
     }
     buildTypes {
         release {
