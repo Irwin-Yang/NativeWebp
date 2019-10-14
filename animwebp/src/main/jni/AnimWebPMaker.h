@@ -40,6 +40,7 @@ public:
     int addImage(const uint8_t* data,size_t data_size,int duration,float quality,bool lossless);
     int addImage(const char* file_path,int duration,float quality,bool lossless);
     int make(int loop_count,const char* output);
+    void reset();
     ~AnimWebPMaker();
 };
 

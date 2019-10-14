@@ -13,7 +13,6 @@ import java.io.IOException;
  * Created At: 2019-10-11
  */
 public class AnimWebPMaker {
-    private static final String TAG = AnimWebPMaker.class.getSimpleName();
     private long nativeContext;
     private int min;
     private int max;
@@ -24,19 +23,16 @@ public class AnimWebPMaker {
     private int frameDuration;
     private int quality;
     private boolean lossless;
-    private boolean mConfigChanged;
 
     public static boolean makeOnce(String[] images, boolean mixed, int loopCount, int duration, @IntRange(from = 1, to = 100) int quality, String outputPath) {
         return (nativeMakeOnce(images, mixed, loopCount, duration, quality, outputPath) != 0);
     }
 
     public AnimWebPMaker() {
-        mConfigChanged = true;
-        quality = 100;
-        frameDuration = 100;
-        mixed = true;
-        minSize = false;
-        lossless = false;
+        nativeSetup();
+        setQuality(100);
+        setFrameDuration(100);
+        setMixed(true);
     }
 
     public int getMin() {
@@ -50,7 +46,7 @@ public class AnimWebPMaker {
      */
     public void setMin(int min) {
         this.min = min;
-        configChange();
+        setParameter("min", String.valueOf(min));
     }
 
     public int getMax() {
@@ -64,7 +60,7 @@ public class AnimWebPMaker {
      */
     public void setMax(int max) {
         this.max = max;
-        configChange();
+        setParameter("max", String.valueOf(max));
     }
 
     public boolean isMinSize() {
@@ -78,7 +74,7 @@ public class AnimWebPMaker {
      */
     public void setMinSize(boolean minSize) {
         this.minSize = minSize;
-        configChange();
+        setParameter("min_size", String.valueOf(minSize ? 1 : 0));
     }
 
     public boolean isMixed() {
@@ -92,7 +88,7 @@ public class AnimWebPMaker {
      */
     public void setMixed(boolean mixed) {
         this.mixed = mixed;
-        configChange();
+        setParameter("mixed", String.valueOf(mixed ? 1 : 0));
     }
 
     public int getLoopCount() {
@@ -119,7 +115,7 @@ public class AnimWebPMaker {
      */
     public void setFrameDuration(int frameDuration) {
         this.frameDuration = frameDuration;
-        configChange();
+        setParameter("duration", String.valueOf(frameDuration));
     }
 
     public int getQuality() {
@@ -133,7 +129,6 @@ public class AnimWebPMaker {
      */
     public void setQuality(@IntRange(from = 1, to = 100) int quality) {
         this.quality = quality;
-        configChange();
     }
 
     public boolean isLossless() {
@@ -142,7 +137,6 @@ public class AnimWebPMaker {
 
     public void setLossless(boolean lossless) {
         this.lossless = lossless;
-        configChange();
     }
 
     public String getOutputPath() {
@@ -197,7 +191,6 @@ public class AnimWebPMaker {
      * @return
      */
     public boolean addImage(byte[] data, int duration, @IntRange(from = 1, to = 100) int quality, boolean lossless) {
-        checkApplyConfig();
         return nativeAddImage(data, data.length, duration, quality, lossless) != 0;
     }
 
@@ -221,35 +214,16 @@ public class AnimWebPMaker {
      * @return
      */
     public boolean addImage(String imagePath, int duration, @IntRange(from = 1, to = 100) int quality, boolean lossless) {
-        checkApplyConfig();
         return nativeAddImagePath(imagePath, duration, quality, lossless) != 0;
     }
 
-    private void checkInit() {
-        if (nativeContext == 0) {
-            nativeSetup();
-        }
-    }
-
-    private void configChange() {
-        mConfigChanged = true;
-    }
-
-    private void checkApplyConfig() {
-        if (mConfigChanged) {
-            mConfigChanged = false;
-            checkInit();
-            config(min, max, minSize, mixed, frameDuration);
-        }
-    }
 
     public boolean make() {
         return make(loopCount, outputPath) != 0;
     }
 
     public void reset() {
-        release();
-        nativeSetup();
+        nativeReset();
     }
 
     public void release() {
@@ -273,15 +247,15 @@ public class AnimWebPMaker {
 
     private native int nativeSetup();
 
-    private native void setParam(String key,String value);
-
-    private native void config(int min, int max, boolean minSize, boolean mixed, int frameDuration);
+    public native void setParameter(String key, String value);
 
     private native int nativeAddImage(byte[] data, int size, int duration, float quality, boolean lossless);
 
     private native int nativeAddImagePath(String imagePath, int duration, float quality, boolean lossless);
 
     private native int make(int loopCount, String outputPath);
+
+    private native void nativeReset();
 
     private native void nativeRelease();
 

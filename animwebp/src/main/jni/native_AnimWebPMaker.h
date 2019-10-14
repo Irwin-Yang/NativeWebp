@@ -32,17 +32,18 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSetup
         (JNIEnv *, jobject);
 
 
-JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_setParam(JNIEnv *, jobject, jstring,
-                                                                      jstring);
+JNIEXPORT void JNICALL
+Java_com_irwin_animwebp_AnimWebPMaker_setParameter(JNIEnv *, jobject, jstring,
+                                                   jstring);
 
 
-/*
- * Class:     com_irwin_animwebp_AnimWebPMaker
- * Method:    config
- * Signature: (IIZZI)V
- */
-JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
-        (JNIEnv *, jobject, jint, jint, jboolean, jboolean, jint);
+///*
+// * Class:     com_irwin_animwebp_AnimWebPMaker
+// * Method:    config
+// * Signature: (IIZZI)V
+// */
+//JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
+//        (JNIEnv *, jobject, jint, jint, jboolean, jboolean, jint);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
@@ -67,6 +68,10 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImagePath
  */
 JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_make
         (JNIEnv *, jobject, jint, jstring);
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_irwin_animwebp_AnimWebPMaker_nativeReset(JNIEnv *, jobject);
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker

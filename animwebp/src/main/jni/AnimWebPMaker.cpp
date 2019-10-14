@@ -86,7 +86,7 @@ int AnimWebPMaker::checkDuration(int *duration) {
         *duration = this->duration;
     }
     if (*duration <= 0) {
-        LOGE("Invalid negative duration (%d)\n", duration);
+        LOGE("Invalid negative duration (%d)\n", *duration);
         return 0;
     }
     return 1;
@@ -271,6 +271,20 @@ int AnimWebPMaker::make(int loop_count, const char *output) {
         }
     }
     return ok;
+}
+
+void AnimWebPMaker::reset() {
+    pic_num = 0;
+    timestamp_ms = 0;
+    width = 0;
+    height = 0;
+    // free resources
+    if (enc != NULL) {
+        WebPAnimEncoderDelete(enc);
+    }
+    enc = NULL;
+
+    WebPDataClear(&webp_data);
 }
 
 AnimWebPMaker::~AnimWebPMaker() {

@@ -197,8 +197,8 @@ extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeSe
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_irwin_animwebp_AnimWebPMaker_setParam(JNIEnv *env, jobject thiz, jstring key_,
-                                               jstring value_) {
+Java_com_irwin_animwebp_AnimWebPMaker_setParameter(JNIEnv *env, jobject thiz, jstring key_,
+                                                   jstring value_) {
     AnimWebPMaker *maker = getMaker(env, thiz);
     if (maker == NULL) {
         return;
@@ -225,19 +225,19 @@ Java_com_irwin_animwebp_AnimWebPMaker_setParam(JNIEnv *env, jobject thiz, jstrin
 }
 
 
-extern "C" JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
-        (JNIEnv *env, jobject thiz, jint jmin, jint jmax, jboolean jminSize, jboolean jmixed,
-         jint jduration) {
-    AnimWebPMaker *maker = getMaker(env, thiz);
-    if (maker == NULL) {
-        return;
-    }
-    maker->setMin(jmin);
-    maker->setMax(jmax);
-    maker->setMinSize(jminSize);
-    maker->setMixed(jmixed);
-    maker->setDuration(jduration);
-}
+//extern "C" JNIEXPORT void JNICALL Java_com_irwin_animwebp_AnimWebPMaker_config
+//        (JNIEnv *env, jobject thiz, jint jmin, jint jmax, jboolean jminSize, jboolean jmixed,
+//         jint jduration) {
+//    AnimWebPMaker *maker = getMaker(env, thiz);
+//    if (maker == NULL) {
+//        return;
+//    }
+//    maker->setMin(jmin);
+//    maker->setMax(jmax);
+//    maker->setMinSize(jminSize);
+//    maker->setMixed(jmixed);
+//    maker->setDuration(jduration);
+//}
 
 
 extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImage
@@ -290,6 +290,15 @@ extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_make
     int ok = maker->make(loopCount, path);
     env->ReleaseStringUTFChars(output, path);
     return ok;
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_irwin_animwebp_AnimWebPMaker_nativeReset(JNIEnv *env, jobject thiz) {
+    AnimWebPMaker *maker = getMaker(env, thiz);
+    if (maker == NULL) {
+        return;
+    }
+    maker->reset();
 }
 
 
