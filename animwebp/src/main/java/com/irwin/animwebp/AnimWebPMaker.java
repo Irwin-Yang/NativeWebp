@@ -26,7 +26,7 @@ public class AnimWebPMaker {
     private boolean lossless;
     private boolean mConfigChanged;
 
-    public static boolean makeOnce(String[] images, boolean mixed, int loopCount, int duration,@IntRange(from = 1, to = 100) int quality, String outputPath) {
+    public static boolean makeOnce(String[] images, boolean mixed, int loopCount, int duration, @IntRange(from = 1, to = 100) int quality, String outputPath) {
         return (nativeMakeOnce(images, mixed, loopCount, duration, quality, outputPath) != 0);
     }
 
@@ -154,10 +154,14 @@ public class AnimWebPMaker {
     }
 
     public static byte[] bitmap2Array(Bitmap bitmap) {
+        return bitmap2Array(bitmap, 100);
+    }
+
+    public static byte[] bitmap2Array(Bitmap bitmap, int quality) {
         ByteArrayOutputStream outs = null;
         try {
             outs = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.WEBP, 100, outs);
+            bitmap.compress(Bitmap.CompressFormat.WEBP, quality, outs);
             outs.flush();
             return outs.toByteArray();
         } catch (IOException e) {
@@ -195,6 +199,30 @@ public class AnimWebPMaker {
     public boolean addImage(byte[] data, int duration, @IntRange(from = 1, to = 100) int quality, boolean lossless) {
         checkApplyConfig();
         return nativeAddImage(data, data.length, duration, quality, lossless) != 0;
+    }
+
+    public boolean addImage(String imagePath) {
+        return addImage(imagePath, frameDuration, quality, lossless);
+    }
+
+    public boolean addImage(String imagePath, int duration) {
+        return addImage(imagePath, duration, quality, lossless);
+    }
+
+    public boolean addImage(String imagePath, boolean lossless) {
+        return addImage(imagePath, frameDuration, quality, lossless);
+    }
+
+    /**
+     * @param imagePath Absolute path of image file.
+     * @param duration  Frame duration
+     * @param quality   Frame quality in 1..100
+     * @param lossless  use lossless mode ,false default
+     * @return
+     */
+    public boolean addImage(String imagePath, int duration, @IntRange(from = 1, to = 100) int quality, boolean lossless) {
+        checkApplyConfig();
+        return nativeAddImagePath(imagePath, duration, quality, lossless) != 0;
     }
 
     private void checkInit() {
@@ -249,6 +277,8 @@ public class AnimWebPMaker {
 
     private native int nativeAddImage(byte[] data, int size, int duration, float quality, boolean lossless);
 
+    private native int nativeAddImagePath(String imagePath, int duration, float quality, boolean lossless);
+
     private native int make(int loopCount, String outputPath);
 
     private native void nativeRelease();
@@ -256,7 +286,7 @@ public class AnimWebPMaker {
     private native void nativeFinalize();
 
     static {
-        System.loadLibrary("anim_maker");
+        System.loadLibrary("anim_webp_maker");
         nativeInit();
     }
 }

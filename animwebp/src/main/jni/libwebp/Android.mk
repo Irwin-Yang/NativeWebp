@@ -30,8 +30,10 @@ ifneq ($(findstring armeabi-v7a, $(TARGET_ARCH_ABI)),)
   NEON := c.neon
   USE_CPUFEATURES := yes
   WEBP_CFLAGS += -DHAVE_CPU_FEATURES_H
+  $(info Use NEON)
 else
   NEON := c
+  $(info Use No NEON)
 endif
 
 dec_srcs := \

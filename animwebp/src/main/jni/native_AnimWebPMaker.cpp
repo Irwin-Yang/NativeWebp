@@ -170,7 +170,9 @@ extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeMa
 
     if (ok) {
         ok = ImgIoUtilWriteFile(output, webp_data.bytes, webp_data.size);
-        if (ok) LOGD("output file: %s     ", output);
+        if (ok) {
+            LOGD("output file: %s     ", output);
+        }
     }
 
     if (ok) {
@@ -227,6 +229,22 @@ extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAd
     size_t size = (size_t) jsize;
     int ok = maker->addImage(data, size, duration, quality, lossless);
     env->ReleaseByteArrayElements(jarray, array, JNI_ABORT);
+    return ok;
+}
+
+extern "C" JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImagePath
+        (JNIEnv *env, jobject thiz, jstring img_path, jint duration, jfloat quality,
+         jboolean lossless) {
+    AnimWebPMaker *maker = getMaker(env, thiz);
+    if (maker == NULL) {
+        return 0;
+    }
+    const char *path = env->GetStringUTFChars(img_path, NULL);
+    if (path == NULL) {
+        return 0;
+    }
+    int ok = maker->addImage(path, duration, quality, lossless);
+    env->ReleaseStringUTFChars(img_path, path);
     return ok;
 }
 

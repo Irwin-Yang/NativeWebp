@@ -81,15 +81,21 @@ void AnimWebPMaker::setDuration(int duration) {
     this->duration = duration;
 }
 
+int AnimWebPMaker::checkDuration(int *duration) {
+    if (*duration <= 0) {
+        *duration = this->duration;
+    }
+    if (*duration <= 0) {
+        LOGE("Invalid negative duration (%d)\n", duration);
+        return 0;
+    }
+    return 1;
+}
+
 int AnimWebPMaker::addImage(const uint8_t *data, size_t data_size, int duration, float quality,
                             bool lossless) {
     int ok;
-    if (duration <= 0) {
-        duration = this->duration;
-    }
-
-    if (duration <= 0) {
-        LOGE("Invalid negative duration (%d)\n", duration);
+    if (!checkDuration(&duration)) {
         return 0;
     }
     config.quality = quality;
@@ -119,6 +125,86 @@ int AnimWebPMaker::addImage(const uint8_t *data, size_t data_size, int duration,
     //#endif
 
     pic.use_argb = 1;
+    //Read image.
+    WebPImageReader reader = WebPGuessImageReader(data, data_size);
+    ok = reader(data, data_size, &pic, 1, NULL);
+    if (!ok) {
+        LOGE("Read image fail.\n");
+        return ok;
+    }
+    if (enc == NULL) {
+        width = pic.width;
+        height = pic.height;
+        enc = WebPAnimEncoderNew(width, height, &anim_config);
+        ok = (enc != NULL);
+        if (!ok) {
+            LOGE("Could not create WebPAnimEncoder object.\n");
+        }
+    }
+
+    if (ok) {
+        ok = (width == pic.width && height == pic.height);
+        if (!ok) {
+            LOGE("Frame #%d dimension mismatched! "
+                 "Got %d x %d. Was expecting %d x %d.\n",
+                 pic_num, pic.width, pic.height, width, height);
+        }
+    }
+
+    if (ok) {
+        ok = WebPAnimEncoderAdd(enc, &pic, timestamp_ms, &config);
+        if (!ok) {
+            LOGE("Error while adding frame #%d\n", pic_num);
+        }
+    }
+    WebPPictureFree(&pic);
+    if (!ok) {
+        return ok;
+    }
+
+    timestamp_ms += duration;
+    ++pic_num;
+
+    return ok;
+
+}
+
+int AnimWebPMaker::addImage(const char *file_path, int duration, float quality, bool lossless) {
+    int ok;
+    if (!checkDuration(&duration)) {
+        return 0;
+    }
+    config.quality = quality;
+    if (!anim_config.allow_mixed) {
+        if (lossless) {
+            config.lossless = 1;
+        } else {
+            config.lossless = 0;
+        }
+    } else {
+        config.lossless = 1;
+    }
+
+
+    ok = WebPValidateConfig(&config);
+    if (!ok) {
+        LOGE("Invalid configuration.\n");
+        return ok;
+    }
+
+    //For Windows Image Content, Not Available.
+    //#ifdef HAVE_WINCODEC_H
+    //  // Try to decode the file using WIC falling back to the other readers for
+    //  // e.g., WebP.
+    //  ok = ReadPictureWithWIC(filename, pic, 1, NULL);
+    //  if (ok) return 1;
+    //#endif
+
+    pic.use_argb = 1;
+
+    const uint8_t *data;
+    size_t data_size = 0;
+    if (!ImgIoUtilReadFile(file_path, &data, &data_size)) return 0;
     //Read image.
     WebPImageReader reader = WebPGuessImageReader(data, data_size);
     ok = reader(data, data_size, &pic, 1, NULL);

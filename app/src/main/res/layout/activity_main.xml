@@ -16,6 +16,7 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/async"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sync"
@@ -23,6 +24,16 @@
         android:layout_marginTop="80dp"
         android:onClick="onClickAsync"
         android:text="Make Async"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/async"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:onClick="onClickPath"
+        android:text="Make Async Path"
         android:textSize="20sp" />
 
 

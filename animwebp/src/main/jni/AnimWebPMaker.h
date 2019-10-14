@@ -26,6 +26,7 @@ private:
      int timestamp_ms;
      int width;
      int height;
+     int checkDuration(int *duration);
 
 public:
     AnimWebPMaker();
@@ -37,6 +38,7 @@ public:
     void setMixed(bool mixed);
     void setDuration(int duration);
     int addImage(const uint8_t* data,size_t data_size,int duration,float quality,bool lossless);
+    int addImage(const char* file_path,int duration,float quality,bool lossless);
     int make(int loop_count,const char* output);
     ~AnimWebPMaker();
 };

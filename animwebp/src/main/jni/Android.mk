@@ -33,7 +33,7 @@ LOCAL_CFLAGS := $(WEBP_CFLAGS)
 LOCAL_STATIC_LIBRARIES := imageio_util imagedec webpmux webpdemux \
                           webp
 
-LOCAL_MODULE := anim_maker
+LOCAL_MODULE := anim_webp_maker
 LOCAL_LDLIBS := -llog
 
 include $(BUILD_SHARED_LIBRARY)

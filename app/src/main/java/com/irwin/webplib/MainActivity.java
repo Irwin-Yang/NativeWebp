@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         mMaker.setLoopCount(0);
         mMaker.setQuality(80);
         mMaker.setMixed(true);
-        mMaker.setOutputPath(new File(Environment.getExternalStorageDirectory(), "webptest_async.cnt").getAbsolutePath());
     }
 
     @Override
@@ -98,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mMaker.reset();
+                mMaker.setOutputPath(new File(Environment.getExternalStorageDirectory(), "webptest_async.cnt").getAbsolutePath());
                 Bitmap bitmap;
 
                 long start = System.currentTimeMillis();
@@ -106,6 +106,41 @@ public class MainActivity extends AppCompatActivity {
 //                    mMaker.addImage(AnimWebPMaker.bitmap2Array(bitmap));
                     Log.i("WebPTest", "Add frame: " + mMaker.addImage(AnimWebPMaker.bitmap2Array(bitmap)));
                     bitmap.recycle();
+                }
+                Log.i("WebPTest", "make: " + mMaker.make() + "    Cost: " + (System.currentTimeMillis() - start));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        v.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                });
+            }
+        }).start();
+    }
+
+
+    public void onClickPath(final View v) {
+        v.setBackgroundColor(Color.RED);
+        final String[] array = new String[]{
+                new File(Environment.getExternalStorageDirectory(), "frame_2_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_3_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_4_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_5_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_6_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_7_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_8_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_9_delay-0.1s.webp").getAbsolutePath(),
+                new File(Environment.getExternalStorageDirectory(), "frame_10_delay-0.1s.webp").getAbsolutePath()
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mMaker.reset();
+                mMaker.setOutputPath(new File(Environment.getExternalStorageDirectory(), "webptest_async_path.cnt").getAbsolutePath());
+
+                long start = System.currentTimeMillis();
+                for (String path : array) {
+                    Log.i("WebPTest", "Add frame: " + mMaker.addImage(path));
                 }
                 Log.i("WebPTest", "make: " + mMaker.make() + "    Cost: " + (System.currentTimeMillis() - start));
                 runOnUiThread(new Runnable() {

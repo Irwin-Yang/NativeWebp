@@ -49,6 +49,14 @@ JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImage
 
 /*
  * Class:     com_irwin_animwebp_AnimWebPMaker
+ * Method:    nativeAddImagePath
+ * Signature: (Ljava/lang/String;IFZ)I
+ */
+JNIEXPORT jint JNICALL Java_com_irwin_animwebp_AnimWebPMaker_nativeAddImagePath
+        (JNIEnv *, jobject, jstring, jint, jfloat, jboolean);
+
+/*
+ * Class:     com_irwin_animwebp_AnimWebPMaker
  * Method:    make
  * Signature: (ILjava/lang/String;)I
  */
