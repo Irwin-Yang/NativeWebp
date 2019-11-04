@@ -1,5 +1,5 @@
 # NativeWebp
-A library to make animated webp picture on Android based on libwep(https://developers.google.com/speed/webp), support for adding 
+A library to make animated webp picture on Android based on -[libwep](https://developers.google.com/speed/webp), support for adding 
 picture frames and composeing output an animated webp picture file.</br>
 
 ## Use as below:
