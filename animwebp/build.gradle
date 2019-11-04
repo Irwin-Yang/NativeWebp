@@ -8,7 +8,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -36,17 +36,14 @@ android {
 //修改jar名字+将指定jar生成的地方
 task makeJar(type: Copy) {
     //删除存在的
-    delete 'build/libs/animwebp.jar'
+    delete '../release/'
     //设置拷贝的文件
-    from('build/intermediates/full_jar/debug/createFullJarDebug/')
+    from('build/outputs/aar/')
     //打进jar包后的文件目录
-    into('build/libs/')
-    //将classes.jar放入build/libs/目录下
-    //include ,exclude参数来设置过滤
-    //（我们只关心classes.jar这个文件）
-    include('full.jar')
+    into('../release/')
+    include('animwebp-release.aar')
     //重命名
-    rename('full.jar', 'animwebp.jar')
+    rename('animwebp-release.aar', 'animwebp-V' + android.defaultConfig.versionName + '.aar')
 }
 
 makeJar.dependsOn(build)
