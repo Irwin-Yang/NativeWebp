@@ -3,7 +3,7 @@ A library to make animated webp picture on Android based on libwep(https://devel
 picture frames and composeing output an animated webp picture file.</br>
 
 ## Use as below:
-Import module animwebp or animwebp-V1.0.0.aar into your project. Then : </br>
+Import module animwebp or animwebp-V1.0.0.aar which in release directory into your project. Then : </br>
 ```Java
 AnimWebPMaker maker=new AnimWebPMaker();
 maker.setFrameDuration(100);
