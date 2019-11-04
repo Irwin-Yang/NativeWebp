@@ -2,7 +2,7 @@
 A library to make animated webp picture on Android based on libwep(https://developers.google.com/speed/webp), support for adding webp
 picture frames and composeing output an animated webp picture file.</br>
 
-##Use as below:
+## Use as below:
 ```Java
 AnimWebPMaker maker=new AnimWebPMaker();
 maker.setFrameDuration(100);
