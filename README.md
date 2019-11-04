@@ -18,6 +18,6 @@ maker.addImage(AnimWebPMaker.bitmap2Array(bitmap));
 ...
 maker.make();
 
-//Or just
+//Or just call static method
 AnimWebPMaker.makeOnce(pathArray, true, 0, 100, 80, outputPath);
 ```
